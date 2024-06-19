@@ -7,7 +7,7 @@ autonomously during the day.
 
 ![Screenshot](https://i.ibb.co/N2vZ1J4/Screenshot-2024-06-19-at-15-50-25-Speedometer-Dashboard.png)
 
-#Setup
+# Setup
 I would recomend downloading all the code onto a raspberry pi and then making a
 cron job to run main.py on startup.
 ```
