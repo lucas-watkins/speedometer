@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Speedometer Dashboard</title>
+</head>
+<body>
+    <div class="top">
+        <p>{{ last_speed_test }}</p>
+        <button type=button onclick="window.location.href='/speedtest'">Run Speed Test</button>
+    </div>
+    <img src="{{ hourly_plot }}" alt="Hourly Plot">
+    <img src="{{ daily_plot }}" alt="Daily Plot">
+    <img src="{{ weekly_plot}}" alt="Weekly Plot">
+    <img src="{{ monthly_plot }}" alt="Monthly Plot">
+</body>
+</html>
