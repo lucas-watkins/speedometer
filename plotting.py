@@ -34,41 +34,43 @@ def get_valid_tests(start: datetime, end: datetime) -> list:
 
 
 def average_list(ls: list) -> float | int:
-    count = 0
-    for item in ls:
-        count += item
-    return count / len(ls)
+    try:
+        count = 0
+        for item in ls:
+            count += item
+        return count / len(ls)
+    except ZeroDivisionError:
+        return 0
     
 
 def average_tests_day(tests: list) -> list:
-    print([i.download_speed for i in tests])
-    results = list()
-    stack = list()
-    final = list()
-    prev_i = 0
-    for i in range(len(tests)):
-        if tests[i].timestamp.strftime('%m%d') == tests[prev_i].timestamp.strftime('%m%d'):
-            stack.append(tests[i])
-            print(i, tests[i].download_speed, tests[i].timestamp.strftime('%m/%d'))
-        else:
-            results.append(stack)
+    try:
+        results = list()
+        stack = list()
+        final = list()
+        prev_i = 0
+        for i in range(len(tests)):
+            if tests[i].timestamp.strftime('%m%d') == tests[prev_i].timestamp.strftime('%m%d'):
+                stack.append(tests[i])
+            else:
+                results.append(stack)
+                if i == len(tests) - 1:
+                    results.append([tests[i]])
+                stack = list()
+                prev_i = i
             if i == len(tests) - 1:
-                results.append([tests[i]])
-            stack = list()
-            prev_i = i
-        if i == len(tests) - 1:
-            results.append(stack)
-    print(len(results))
-    
-    for day in results:
-        print([i.download_speed for i in day])
-        st = SpeedTest()
-        st.download_speed = round(average_list([i.download_speed for i in day]))
-        st.upload_speed = round(average_list([i.upload_speed for i in day]))
-        st.timestamp = datetime.strptime(day[0].timestamp.strftime('%m/%d'), '%m/%d')
-        final.append(st)
-    
-    return final
+                results.append(stack)
+
+        for day in results:
+            st = SpeedTest()
+            st.download_speed = round(average_list([i.download_speed for i in day]))
+            st.upload_speed = round(average_list([i.upload_speed for i in day]))
+            st.timestamp = datetime.strptime(day[0].timestamp.strftime('%m/%d'), '%m/%d')
+            final.append(st)
+
+        return final
+    except IndexError:
+        return []
 
 
 def gen_plot(time_delta: timedelta, title: str) -> str:

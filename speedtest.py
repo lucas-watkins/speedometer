@@ -3,7 +3,7 @@ import subprocess
 from dataclasses import dataclass
 import pickle
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @dataclass
@@ -77,3 +77,4 @@ class SpeedTest:
 if os.path.isfile('previous_tests.bin'):
     Previous.tests = pickle.load(open('previous_tests.bin', 'rb'))
     
+   
