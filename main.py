@@ -4,6 +4,28 @@ from speedtest import SpeedTest, Previous
 import plotting as plting
 from datetime import timedelta
 from threading import Thread
+from time import sleep
+import json
+from dataclasses import dataclass
+from os.path import exists
+import logging
+import sys
+
+
+if not exists('config.json'):
+    sys.exit('config.json not found! Please create or get from github repository.')
+
+
+@dataclass
+class Config:
+    __json = json.loads('config.json')
+    logger = logging.getLoggerClass()
+    try:
+        auto_test = __json['auto_test']
+        rest_interval = __json['rest_interval_sec']
+    except KeyError:
+        sys.exit('Invaid Configuration File')
+
 
 app = Flask('Speedometer')
 
@@ -26,6 +48,12 @@ def main_route() -> str:
                            )
 
 
+def auto_speedtest() -> None:
+    while True:
+        sleep(Config.rest_interval)
+        SpeedTest()
+
+
 @app.route('/speedtest')
 async def speedtest_on_demand() -> str:
     Thread(target=SpeedTest().run).start()
@@ -34,6 +62,9 @@ async def speedtest_on_demand() -> str:
 
 if __name__ == '__main__':
     try:
+        if Config.auto_test:
+            Thread(target=auto_speedtest).start()
+
         WSGIServer(('0.0.0.0', 80), app).serve_forever()
         Previous.pickle_tests()
     except KeyboardInterrupt:

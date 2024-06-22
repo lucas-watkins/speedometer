@@ -3,7 +3,7 @@ import subprocess
 from dataclasses import dataclass
 import pickle
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 @dataclass
