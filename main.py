@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from gevent.pywsgi import WSGIServer
 from speedtest import SpeedTest, Previous
 import plotting as plting
 from datetime import timedelta
@@ -32,10 +33,8 @@ async def speedtest_on_demand() -> str:
 
 
 if __name__ == '__main__':
-    # TODO replace with lightweight pywsgi server later
     try:
-        app.run('0.0.0.0', 80)
-        
+        WSGIServer(('0.0.0.0', 80), app).serve_forever()
         Previous.pickle_tests()
     except KeyboardInterrupt:
         Previous.pickle_tests()
