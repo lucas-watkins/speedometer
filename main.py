@@ -15,11 +15,12 @@ import sys
 if not exists('config.json'):
     sys.exit('config.json not found! Please create or get from github repository.')
 
+logging.basicConfig(format='%(levelname)s: %(msg)s', level=logging.INFO)
+
 
 @dataclass
 class Config:
-    __json = json.loads('config.json')
-    logger = logging.getLoggerClass()
+    __json = json.load(open('config.json', 'r'))
     try:
         auto_test = __json['auto_test']
         rest_interval = __json['rest_interval_sec']
@@ -68,4 +69,5 @@ if __name__ == '__main__':
         WSGIServer(('0.0.0.0', 80), app).serve_forever()
         Previous.pickle_tests()
     except KeyboardInterrupt:
+        logging.info('Server stopping...')
         Previous.pickle_tests()
