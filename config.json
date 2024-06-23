@@ -1,5 +1,5 @@
 {
     "rest_interval_sec": 1800,
     "auto_test": false,
-    "use_log_file": true
+    "use_log_file": false
 }
