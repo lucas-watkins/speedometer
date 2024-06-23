@@ -1,5 +1,6 @@
 # User made files
 previous_tests.bin
+logs.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

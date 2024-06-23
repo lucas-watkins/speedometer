@@ -27,14 +27,20 @@ class Config:
         sys.exit('Invaid Configuration File')
 
 
+class GeventLog:
+    @staticmethod
+    def write(text: str) -> None:
+        logging.info(text.removesuffix('\n'))
+
+
 if Config.use_log_file:
     logging.basicConfig(format='%(asctime)s - %(levelname)s: %(msg)s', level=logging.INFO,
-                        datefmt='%-I:%-M %p  %-m/%-d/%Y', handlers=[
+                        datefmt='%-I:%M %p  %-m/%-d/%Y', handlers=[
                             logging.StreamHandler(sys.stdout),
                             logging.FileHandler('logs.txt')])
 else:
     logging.basicConfig(format='%(asctime)s - %(levelname)s: %(msg)s', level=logging.INFO,
-                        datefmt='%-I:%-M %p  %-m/%-d/%Y')
+                        datefmt='%-I:%M %p  %-m/%-d/%Y')
 
 app = Flask('Speedometer')
 
@@ -74,7 +80,7 @@ if __name__ == '__main__':
         if Config.auto_test:
             Thread(target=auto_speedtest).start()
 
-        WSGIServer(('0.0.0.0', 80), app).serve_forever()
+        WSGIServer(('0.0.0.0', 80), app, log=GeventLog).serve_forever()
         Previous.pickle_tests()
     except KeyboardInterrupt:
         logging.info('Server stopping...')
