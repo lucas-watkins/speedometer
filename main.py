@@ -15,8 +15,6 @@ import sys
 if not exists('config.json'):
     sys.exit('config.json not found! Please create or get from github repository.')
 
-logging.basicConfig(format='%(levelname)s: %(msg)s', level=logging.INFO)
-
 
 @dataclass
 class Config:
@@ -24,9 +22,19 @@ class Config:
     try:
         auto_test = __json['auto_test']
         rest_interval = __json['rest_interval_sec']
+        use_log_file = __json['use_log_file']
     except KeyError:
         sys.exit('Invaid Configuration File')
 
+
+if Config.use_log_file:
+    logging.basicConfig(format='%(asctime)s - %(levelname)s: %(msg)s', level=logging.INFO,
+                        datefmt='%-I:%-M %p  %-m/%-d/%Y', handlers=[
+                            logging.StreamHandler(sys.stdout),
+                            logging.FileHandler('logs.txt')])
+else:
+    logging.basicConfig(format='%(asctime)s - %(levelname)s: %(msg)s', level=logging.INFO,
+                        datefmt='%-I:%-M %p  %-m/%-d/%Y')
 
 app = Flask('Speedometer')
 
