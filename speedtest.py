@@ -3,7 +3,7 @@ import subprocess
 from dataclasses import dataclass
 import pickle
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @dataclass
@@ -76,5 +76,8 @@ class SpeedTest:
 # setup lists dataclass
 if os.path.isfile('previous_tests.bin'):
     Previous.tests = pickle.load(open('previous_tests.bin', 'rb'))
-    
+    for test in Previous.tests:
+        if datetime.today() - timedelta(days=30) > test.timestamp:
+            Previous.tests.remove(test)
+
    

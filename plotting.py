@@ -17,6 +17,7 @@ def get_base64_img(fig: plt.figure) -> str:
 
 def generate_fig(title: str) -> tuple:
     fig, ax = plt.subplots()
+    plt.set_loglevel('WARNING')
     ax.set_title(title)
     ax.set_ylabel('Bandwidth (Mbps)')
     ax.set_xlabel('Time')
