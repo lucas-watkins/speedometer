@@ -11,6 +11,9 @@ autonomously during the day.
 I would recomend downloading all the code onto a raspberry pi and then making a
 cron job to run main.py on startup.
 ```
+# Make sure you have speedtest cli installed
+# Instructions on how to install here https://www.speedtest.net/apps/cli
+
 # Clone repo
 git clone https://github.com/lucas-watkins/speedometer.git
 
